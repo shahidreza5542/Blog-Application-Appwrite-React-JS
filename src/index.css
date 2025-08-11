@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+@plugin "@tailwindcss/typography";
+@theme{
+  --color-main : #131315;
+  --color-section: #1d1d21;
+  --color-btn : #fd366e;
+  --color-btn-hover:#ca2b58; 
+  --color-white:#F5F5F5;
+
+  --font-pregular:Poppins-Regular;
+  --font-pbold:Poppins-Bold;
+  --font-pblack:Poppins-Black;
+  --font-psmbold:Poppins-SemiBold;
+  --font-pmdium:Poppins-Medium;
+
+}
+
+body{
+  @apply bg-main text-white font-pregular;
+}
+.prose{
+  overflow: hidden;
+}
+.prose h1,h2,h3,h4,h5,h6,ul,ol,table,tr,td,th{
+  @apply !text-white; 
+}
+.prose img{
+  @apply mx-auto hover:scale-105 transition-all duration-300;
+}

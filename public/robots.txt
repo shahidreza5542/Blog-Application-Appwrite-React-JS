@@ -1,0 +1,2 @@
+# Block indexing of archive pages (categories and tags)
+User-agent: *  
