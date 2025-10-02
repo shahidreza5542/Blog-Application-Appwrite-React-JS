@@ -103,14 +103,6 @@ const [checkOnce,SetCheckOnece] = useState(true)
   }
 
   const fetchUser = async () => {
-    const timeoutId = setTimeout(() => {
-      if (checkOnce) {
-        setLoading(false)
-        SetCheckOnece(false)
-        console.warn('User fetch timeout - continuing without user')
-      }
-    }, 8000) // 8 second timeout
-
     try {
       if (checkOnce) {
         setLoading(true)
@@ -118,15 +110,8 @@ const [checkOnce,SetCheckOnece] = useState(true)
       
       console.log('🔄 Fetching user from Appwrite...')
       
-      // Add timeout to the user fetch (increased to 6 seconds)
-      const userPromise = Promise.race([
-        appwriteAccount.get(),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('User fetch timeout')), 6000)
-        )
-      ])
-      
-      const user = await userPromise
+      // Remove timeout - let it complete naturally
+      const user = await appwriteAccount.get()
       console.log('✅ User fetched successfully:', user.name || user.email)
       
       // Set user immediately without waiting for profile
@@ -160,22 +145,18 @@ const [checkOnce,SetCheckOnece] = useState(true)
     } catch (error) {
       console.log('fetchUser error:', error)
       
-      if (error.message === 'User fetch timeout') {
-        console.warn('⚠️ User fetch timed out')
-        if (checkOnce) {
-          toast.error('Connection slow. Please refresh if needed.')
-        }
-      } else if (error.message?.includes('fetch') || error.name === 'TypeError') {
-        console.error('Network error during user fetch:', error)
-        if (checkOnce) {
-          toast.error('Network error. Please check your connection.')
-        }
+      // Handle different error types
+      if (error.message?.includes('fetch') || error.name === 'TypeError') {
+        console.warn('⚠️ Network error during user fetch, continuing without user')
+        // Don't show error toast - just continue without user
       } else if (error.code === 401 || error.type === 'general_unauthorized_scope') {
+        console.log('No valid session found')
         dispatch(removeUser())
         setBlogs([])
+      } else {
+        console.warn('User fetch failed, continuing without user:', error.message)
       }
     } finally {
-      clearTimeout(timeoutId)
       setLoading(false)
       SetCheckOnece(false)
     }
@@ -195,7 +176,8 @@ const [checkOnce,SetCheckOnece] = useState(true)
 
 
 
-  if(loading){
+  // Show simple loading only for initial load
+  if(loading && checkOnce){
     return <LoaderComponent/>
   }
   return (

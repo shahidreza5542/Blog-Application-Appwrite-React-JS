@@ -17,11 +17,11 @@ const HomePage = () => {
     }
   }, [allBlogs])
 
-  // Auto-hide loading after 3 seconds even if no blogs
+  // Auto-hide loading after 2 seconds even if no blogs
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 3000)
+    }, 2000) // Reduced from 3 to 2 seconds
     return () => clearTimeout(timer)
   }, [])
 
