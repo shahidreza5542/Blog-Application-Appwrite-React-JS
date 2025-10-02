@@ -28,9 +28,9 @@ const [checkOnce,SetCheckOnece] = useState(true)
 
     const fetchAllHomeBlogs = async() => {
         try {
-            console.log(' Fetching blogs...')
+            console.log('📚 Fetching blogs...')
             
-            // Add timeout for blog fetching too
+            // Add timeout for blog fetching (increased to 8 seconds)
             const blogPromise = Promise.race([
                 appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID, ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, [ 
                     Query.equal("status", true),
@@ -48,7 +48,7 @@ const [checkOnce,SetCheckOnece] = useState(true)
                     ])
                 ]),
                 new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Blog fetch timeout')), 4000)
+                    setTimeout(() => reject(new Error('Blog fetch timeout')), 8000)
                 )
             ])
 
@@ -116,20 +116,20 @@ const [checkOnce,SetCheckOnece] = useState(true)
         SetCheckOnece(false)
         console.warn('User fetch timeout - continuing without user')
       }
-    }, 5000) // 5 second timeout
+    }, 8000) // 8 second timeout
 
     try {
       if (checkOnce) {
         setLoading(true)
       }
       
-      console.log('Fetching user from Appwrite...')
+      console.log('🔄 Fetching user from Appwrite...')
       
-      // Add timeout to the user fetch
+      // Add timeout to the user fetch (increased to 6 seconds)
       const userPromise = Promise.race([
         appwriteAccount.get(),
         new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('User fetch timeout')), 3000)
+          setTimeout(() => reject(new Error('User fetch timeout')), 6000)
         )
       ])
       

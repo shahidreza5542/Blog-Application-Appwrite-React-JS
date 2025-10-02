@@ -1,11 +1,11 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 const AboutPage = () => {
   return (
     <>
     <Helmet>
-                <title>Blogi | About Page</title>
+                <title>Devio | About Page</title>
                 <link rel="canonical" href={window.location.href} />
                 <meta name="description" content={"A Blog Website Which is Design By Code with Krishna For Blogs , Coding Techniques, Latest Technologies, Most Useable Framework Mern Stack , MEAN Stack"} />
                 <meta name="keywords" content="blog application, node js blog application, react blog application, react js blog application, blog application with admin panel, coding blog, how to create a blog application, how to start a coding blog, amazing coding vlogs, coding vlog asthetic, coding vlog aesthetic, realistic coding vlog, mearn stack application, blog automation, coding vlog, blog app, coding advice, starting a blog, coding, blog app using mern stack, build blog app using mern, blog writing, react blog app, coding podcast, code blog" />
@@ -13,12 +13,12 @@ const AboutPage = () => {
         <div className="py-8 md:py-16 container mx-auto min-h-[80vh] px-4 md:px-6 mt-16">
             <div className="max-w-4xl mx-auto">
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-pbold text-white mb-6 md:mb-8">
-                    About <span className="text-btn">Blogi</span>
+                    About <span className="text-btn">Devio</span>
                 </h1>
 
                 <div className="prose prose-lg max-w-none text-gray-300 space-y-6">
                     <p className="text-lg md:text-xl leading-relaxed">
-                        Welcome to <span className="text-btn font-semibold">Blogi</span> - your ultimate destination for 
+                        Welcome to <span className="text-btn font-semibold">Devio</span> - your ultimate destination for 
                         coding insights, technology trends, and development tutorials.
                     </p>
                     

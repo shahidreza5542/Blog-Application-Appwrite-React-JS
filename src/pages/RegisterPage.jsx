@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux'
 import { removeUser, setUser } from '../redux/slices/Auth.slice'
 import { useMainContext } from '../context/MainContext'
 import { ENVObj } from '../lib/constant'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 const RegisterPage = () => {
   const [isHide,setisHide] = useState(true)
@@ -99,7 +99,7 @@ const RegisterPage = () => {
     <>
      <Helmet>
          <meta charSet="utf-8" />
-                <title>Blogi | Regsiter Page</title>
+                <title>Devio | Register Page</title>
                 <link rel="canonical" href={window.location.href} /> 
       </Helmet>
       <section className="min-h-[60vh] flex items-center justify-center mt-16">

@@ -11,7 +11,7 @@ import { appwriteAccount } from '../lib/appwrite'
 import { useDispatch } from 'react-redux'
 import { removeUser, setUser } from '../redux/slices/Auth.slice'
 import { useMainContext } from '../context/MainContext'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 const LoginPage = () => {
   const [isHide,setisHide] = useState(true)
@@ -95,7 +95,7 @@ const LoginPage = () => {
     <>
     <Helmet>
          <meta charSet="utf-8" />
-                <title>Blogi | Login Page</title>
+                <title>Devio | Login Page</title>
                 <link rel="canonical" href={window.location.href} /> 
       </Helmet>
       <section className="min-h-[60vh] flex items-center justify-center mt-16">

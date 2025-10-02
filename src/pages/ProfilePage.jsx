@@ -1,14 +1,14 @@
 import React from 'react'
 import AvatarComponent from '../components/profile/AvatarComponent'
 import BasicInformation from '../components/profile/BasicInformation'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 const ProfilePage = () => {
   return (
     <>
      <Helmet>
          <meta charSet="utf-8" />
-                <title>Blogi | Profile Page</title>
+                <title>Devio | Profile Page</title>
                 <link rel="canonical" href={window.location.href} /> 
       </Helmet>
       <div className="mt-16">

@@ -9,7 +9,7 @@ import { Query } from 'appwrite'
 import MdPreviewComponent from './MdPreviewComponent'
 import moment from 'moment'
 import CommentSection from './CommentSection'
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 const SingleBlogPage = () => {
 
     const params = useParams()

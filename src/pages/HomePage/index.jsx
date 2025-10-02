@@ -26,32 +26,49 @@ const HomePage = () => {
   }, [])
 
   const filterBlogs = allBlogs.length <= 0 ? [] : allBlogs.filter((cur, i) => {
-    if (!search) {
+    if (!search || search.trim() === '') {
       return true
     }
-    const x = cur.title?.toLowerCase() || ''
-    const y = cur.description?.toLowerCase() || ''
-    const z = cur.tags?.toLowerCase() || ''
-    const alpha = search.toLowerCase()
-
-    return x.includes(alpha) || y.includes(alpha) || z.includes(alpha)
+    
+    const searchTerm = search.toLowerCase().trim()
+    const title = cur.title?.toLowerCase() || ''
+    const description = cur.description?.toLowerCase() || ''
+    const tags = cur.tags?.toLowerCase() || ''
+    
+    console.log('Searching for:', searchTerm, 'in:', { title, description, tags })
+    
+    const matches = title.includes(searchTerm) || 
+                   description.includes(searchTerm) || 
+                   tags.includes(searchTerm)
+    
+    return matches
   })
  
   return (
     <div className="min-h-screen bg-black mt-16">
       <div className="container mx-auto px-4 py-8">
         {/* Search Bar */}
-        <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex flex-col items-center">
           <div className="w-full max-w-md border border-gray-600 py-3 px-4 rounded-lg flex items-center bg-section hover:border-btn transition-colors duration-200">
             <input 
               value={search} 
-              onChange={(e) => setSearch(e.target.value)} 
+              onChange={(e) => {
+                console.log('Search input changed:', e.target.value)
+                setSearch(e.target.value)
+              }} 
               type="text" 
               className="w-full bg-transparent outline-none text-white placeholder-gray-400" 
               placeholder="Search blogs..." 
             />
             <CgSearch className="text-2xl text-gray-400" />
           </div>
+          
+          {/* Debug info */}
+          {search && (
+            <div className="mt-2 text-sm text-gray-400">
+              Searching for: "{search}" | Found: {filterBlogs.length} results | Total blogs: {allBlogs.length}
+            </div>
+          )}
         </div>
 
         {/* Content */}
