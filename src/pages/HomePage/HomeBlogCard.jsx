@@ -6,107 +6,116 @@ import moment from 'moment'
 import toast from 'react-hot-toast'
 import { Query } from 'appwrite'
 
-const HomeBlogCard = ({data}) => {
-    const [user,setUser] = useState({})
-    const [images,setImages] = useState({
-        image:'',
-        profileImage:''
-    })
+const HomeBlogCard = ({ data }) => {
+  const [user, setUser] = useState({})
+  const [images, setImages] = useState({
+    image: '',
+    profileImage: ''
+  })
 
-    
-    const tags = data?.tags?.split(",")
+  const tags = data?.tags?.split(",")
 
-  
-
-
-  const fetchuser=async()=>{
+  const fetchUser = async () => {
     try {
-         // Get blog image first (always available)
-         const image = appWriteStorage.getFileView(ENVObj.VITE_APPWRITE_STORAGE_ID,data.image)
-         
-         // Try to get user profile
-         try {
-           const {documents} = await appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID,ENVObj.VITE_APPWRITE_PROFILE_COLLECTION_ID,[
-              Query.equal('user',data.user)
-           ])
-           
-           if (documents.length > 0) {
-             setUser(documents[0])
-             
-             // Get profile image if available
-             const profileImage = documents[0].image ? 
-               appWriteStorage.getFileView(ENVObj.VITE_APPWRITE_STORAGE_ID,documents[0].image) : null
-             
-             setImages({ image, profileImage })
-           } else {
-             setImages({ image, profileImage: null })
-           }
-         } catch (profileError) {
-           console.log('Profile fetch failed:', profileError)
-           setImages({ image, profileImage: null })
-           setUser({ name: 'Anonymous User' })
-         }
+      const image = appWriteStorage.getFileView(ENVObj.VITE_APPWRITE_STORAGE_ID, data.image)
+      try {
+        const { documents } = await appWriteDB.listDocuments(
+          ENVObj.VITE_APPWRITE_DB_ID,
+          ENVObj.VITE_APPWRITE_PROFILE_COLLECTION_ID,
+          [Query.equal('user', data.user)]
+        )
 
-    } catch (error) {
-        console.log('HomeBlogCard fetch error:', error)
-        // Don't show toast for permission errors
-        if (error.code !== 401) {
-          toast.error(error.message)
+        if (documents.length > 0) {
+          setUser(documents[0])
+          const profileImage = documents[0].image
+            ? appWriteStorage.getFileView(ENVObj.VITE_APPWRITE_STORAGE_ID, documents[0].image)
+            : null
+          setImages({ image, profileImage })
+        } else {
+          setImages({ image, profileImage: null })
         }
+      } catch (profileError) {
+        console.log('Profile fetch failed:', profileError)
+        setImages({ image, profileImage: null })
+        setUser({ name: 'Anonymous User' })
+      }
+    } catch (error) {
+      console.log('HomeBlogCard fetch error:', error)
+      if (error.code !== 401) toast.error(error.message)
     }
   }
-  useEffect(()=>{
-    fetchuser()
-   
-  },[])
 
+  useEffect(() => {
+    fetchUser()
+  }, [])
 
   return (
-    <>
-       
-    <Link  to={`/blog/${data.slug}`}> 
-  <div className="relative min-h-[80vh] flex flex-col my-2  bg-section shadow-sm border border-btn rounded-lg  ">
-    <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
+    <Link to={`/blog/${data.slug}`}>
+      <div className="group relative flex flex-col bg-section border border-btn rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden w-full md:max-w-md mx-auto">
         
-      <img src={images.image} alt={data.title} className='transition-all duration-300 hover:scale-105' />
-    </div>
-    <div className="p-4">
-    
-      <h6 className="mb-2 text-white text-xl font-psmbold">
-        {data.title}
-      </h6>
-      <p className="text-zinc-300 leading-normal font-pregular h-16">
-        {data.description?.substring(0,100)} {data.description?.length>100?'...':''}
-      </p>
-         <ul className="flex items-center justify-start  gap-x-1 flex-wrap">
-                        {
-                            tags && tags.length> 0 && tags.map((cur,i)=>{
-                                return <li className='px-5 py-1 rounded-xl-full shadow bg-main  capitalize'>{cur}</li>
-                            })
-                        }
-                    </ul>
+        {/* Image */}
+        <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
+          <img
+            src={images.image}
+            alt={data.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        </div>
 
-    </div>
-    <div className="flex items-center justify-between p-4">
-      <div className="flex items-center">
-      {images.profileImage &&  <img alt={user && user.name} src={images.profileImage} className="relative inline-block h-8 w-8 rounded-full" />}
-        <div className="flex flex-col ml-3 text-sm">
-          <span className="text-zinc-200 font-semibold">{user?.name || 'Anonymous User'}</span>
-          <span className="text-zinc-300">
-                   {moment(new Date(data.$createdAt)).format("LL")}
+        {/* Content */}
+        <div className="p-4 sm:p-5 flex flex-col flex-1">
+          <h3 className="text-white text-lg sm:text-xl font-bold mb-2 sm:mb-3 line-clamp-2">
+            {data.title}
+          </h3>
+          <p className="text-zinc-300 text-sm sm:text-base leading-relaxed mb-3 sm:mb-4 line-clamp-3">
+            {data.description?.substring(0, 120)}
+            {data.description?.length > 120 ? '...' : ''}
+          </p>
 
+          {/* Tags */}
+          {tags && tags.length > 0 && (
+            <ul className="flex flex-wrap gap-2 mb-3">
+              {tags.map((cur, i) => (
+                <li
+                  key={i}
+                  className="px-3 py-1 bg-btn text-white rounded-full text-xs sm:text-sm font-semibold shadow-sm hover:opacity-90 transition-opacity duration-200 capitalize"
+                >
+                  {cur}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between p-4 border-t border-gray-700/30">
+          <div className="flex items-center">
+            {images.profileImage ? (
+              <img
+                src={images.profileImage}
+                alt={user?.name || 'Anonymous'}
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-btn flex items-center justify-center text-white font-bold text-sm">
+                {user?.name?.charAt(0) || 'A'}
+              </div>
+            )}
+            <div className="ml-3 flex flex-col text-sm">
+              <span className="text-white font-semibold">{user?.name || 'Anonymous User'}</span>
+              <span className="text-zinc-400 text-xs sm:text-sm">
+                {moment(new Date(data.$createdAt)).format('LL')}
+              </span>
+            </div>
+          </div>
+
+          <span className="text-zinc-400 text-xs sm:text-sm">
+            {moment(new Date(data.$createdAt)).format('LT')}
           </span>
         </div>
       </div>
-    </div>
-    <p className="text-end px-4 text-xs text-zinc-400 pb-2">
-        {moment(new Date(data.$createdAt)).format("LLL")}
-    </p>
-  </div> 
-</Link>
-
-
-    </>
+    </Link>
   )
 }
 
