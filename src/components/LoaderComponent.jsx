@@ -28,7 +28,7 @@ const LoaderComponent = () => {
           className="font-pbold text-5xl lg:text-7xl flex items-center justify-center gap-x-2 text-white"
         >
           <FaFreeCodeCamp className="text-btn" />
-          <span>Blogi</span>
+          <span>Devio</span>
           <span className="w-2 h-2 rounded-full bg-btn animate-bounce"></span>
         </div>
 
