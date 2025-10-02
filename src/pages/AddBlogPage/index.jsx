@@ -35,36 +35,71 @@ const AddBlogPage = () => {
   const onSubmitHandler = async(values,helpers)=>{
     try {
       setLoading(true)
-      // file update
-    const file =   await appWriteStorage.createFile(ENVObj.VITE_APPWRITE_STORAGE_ID,ID.unique(),values.image)
+      
+      console.log('AddBlog: Starting blog creation...')
+      console.log('AuthUser:', authuser)
+      console.log('Form values:', values)
+      
+      // Check if user is authenticated
+      if (!authuser || !authuser.$id) {
+        throw new Error('User not authenticated')
+      }
+      
+      // file upload
+      console.log('AddBlog: Uploading image...')
+      const file = await appWriteStorage.createFile(ENVObj.VITE_APPWRITE_STORAGE_ID,ID.unique(),values.image)
+      console.log('AddBlog: Image uploaded:', file)
 
-    values['image'] = file.$id
-    values['slug'] = generateSlug(values.title)
-    values['created_at'] = new Date()
-    values['updated_at'] = new Date()
-    values['user'] = authuser.$id
+      values['image'] = file.$id
+      values['slug'] = generateSlug(values.title)
+      values['created_at'] = new Date()
+      values['updated_at'] = new Date()
+      values['user'] = authuser.$id
+      values['status'] = true // Add status field
 
-    await appWriteDB.createDocument(ENVObj.VITE_APPWRITE_DB_ID,ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID,ID.unique(),values)
+      console.log('AddBlog: Creating document with values:', values)
+      
+      // Try creating the blog document with only required fields
+      const blogData = {
+        title: values.title,
+        description: values.description,
+        content: values.content,
+        tags: values.tags,
+        image: values.image,
+        slug: values.slug,
+        user: values.user,
+        status: values.status
+      }
+      
+      console.log('Final blog data to send:', blogData)
+      
+      await appWriteDB.createDocument(
+        ENVObj.VITE_APPWRITE_DB_ID,
+        ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID,
+        ID.unique(),
+        blogData
+      )
 
+      toast.success("Blog Added !")
+      
+      console.log('AddBlog: Refreshing blogs...')
+      await fetchAllHomeBlogs()
+      helpers.resetForm()
 
- 
-
-
-
- 
-   toast.success("Blog Added !")
-  
-   await fetchAllHomeBlogs()
-helpers.resetForm()
-
- 
     } catch (error) {
-      toast.error(error.message)
+      console.log('AddBlog error:', error)
+      
+      if (error.code === 401) {
+        toast.error('Permission denied. Please check Appwrite collection permissions in console.')
+      } else if (error.type === 'general_unauthorized_scope') {
+        toast.error('Unauthorized access. Please check your Appwrite permissions.')
+      } else {
+        toast.error(error.message)
+      }
     }finally{
       setLoading(false)
     }
   }
-
   return (
     <>
             <div className="my-10 flex items-center justify-center min-h-[60vh]">

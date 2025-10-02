@@ -13,7 +13,7 @@ const ProtectedLayout = () => {
 const navigate = useNavigate()
     useEffect(()=>{
         if(!user){
-navigate("/")
+            navigate("/login")
         }else{
             setLoading(false)
         }

@@ -45,9 +45,13 @@ const LoginPage = () => {
  
         //ye kaam karna hain
         await appwriteAccount.createEmailPasswordSession(values.email,values.password)
-        await  fetchUser()
-        navigate("/")
-        toast.success("Login Success")
+        await fetchUser()
+        
+        // Small delay to ensure state is updated
+        setTimeout(() => {
+          navigate("/")
+          toast.success("Login Success")
+        }, 100)
       
     // const user = await appwriteAccount.get()
     //     dispatch(setUser(user))
@@ -84,7 +88,7 @@ const LoginPage = () => {
       initialValues={initialValues}
       onSubmit={onSubmitHandler}
      >
-       <Form action="" className=' w-[96%] sm:w-[90%] md:w-1/2 lg:w-1/3 my-5 mx-auto py-5 px-4 border border-btn rounded'>
+       <Form action="" className='min-h-[80vh] w-[96%] sm:w-[90%] md:w-1/2 lg:w-1/3 my-5 mx-auto py-5 px-4 border border-btn rounded'>
             <Logo/>
 
     

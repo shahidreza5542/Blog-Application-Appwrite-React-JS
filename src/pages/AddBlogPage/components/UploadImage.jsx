@@ -15,7 +15,7 @@ export default function UploadImage({value,setValue}) {
   const {getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
     accept:{ 
-    'image/*': ["*"],
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.bmp', '.webp']
     },
     multiple:false
   })

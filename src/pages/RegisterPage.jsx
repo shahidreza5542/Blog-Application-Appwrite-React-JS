@@ -52,11 +52,20 @@ const RegisterPage = () => {
     const user=  await appwriteAccount.create(ID.unique(),values.email,values.password,values.name);
 
     // profile document 
-    await appWriteDB.createDocument(ENVObj.VITE_APPWRITE_DB_ID,ENVObj.VITE_APPWRITE_PROFILE_COLLECTION_ID,ID.unique(),{
-      bio:'',
-      name:values.name,
-      user:user.$id
-    })
+    try {
+      await appWriteDB.createDocument(ENVObj.VITE_APPWRITE_DB_ID,ENVObj.VITE_APPWRITE_PROFILE_COLLECTION_ID,ID.unique(),{
+        bio:'',
+        name:values.name,
+        user:user.$id
+      })
+    } catch (profileError) {
+      console.log('Profile creation failed, trying without name field:', profileError)
+      // If name field doesn't exist, create profile without it
+      await appWriteDB.createDocument(ENVObj.VITE_APPWRITE_DB_ID,ENVObj.VITE_APPWRITE_PROFILE_COLLECTION_ID,ID.unique(),{
+        bio:'',
+        user:user.$id
+      })
+    }
 
    
         //ye kaam karna hain
@@ -100,7 +109,7 @@ const RegisterPage = () => {
       initialValues={initialValues}
       onSubmit={onSubmitHandler}
      >
-       <Form action="" className=' w-[96%] sm:w-[90%] md:w-1/2 lg:w-1/3 my-5 mx-auto py-5 px-4 border border-btn rounded'>
+       <Form action="" className='min-h-[80vh] w-[96%] sm:w-[90%] md:w-1/2 lg:w-1/3 my-5 mx-auto py-5 px-4 border border-btn rounded'>
             <Logo/>
 
           <div className="mb-3">
