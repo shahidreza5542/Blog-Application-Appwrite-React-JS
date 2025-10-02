@@ -11,10 +11,10 @@ const ProfilePage = () => {
                 <title>Blogi | Profile Page</title>
                 <link rel="canonical" href={window.location.href} /> 
       </Helmet>
-    <AvatarComponent/>
-
-    <BasicInformation/>
-    
+      <div className="mt-16">
+        <AvatarComponent/>
+        <BasicInformation/>
+      </div>
     </>
   )
 }

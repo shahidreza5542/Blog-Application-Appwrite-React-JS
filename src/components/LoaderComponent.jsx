@@ -11,9 +11,11 @@ const LoaderComponent = () => {
           clearInterval(interval)
           return 100
         }
-        return prev + 5 // fast increment
+        // Faster initial loading, slower near end
+        const increment = prev < 70 ? 8 : prev < 90 ? 3 : 1
+        return Math.min(prev + increment, 100)
       })
-    }, 30) // smooth and fast
+    }, 50) // Balanced speed
 
     return () => clearInterval(interval)
   }, [])

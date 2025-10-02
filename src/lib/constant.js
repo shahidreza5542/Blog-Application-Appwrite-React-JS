@@ -10,9 +10,17 @@ export const ENVObj = {
     VITE_APPWRITE_COMMENT_COLLECTION_ID: import.meta.env.VITE_APPWRITE_COMMENT_COLLECTION_ID || '',
 }
 
-export const generateSlug = (str)=> slugify(str+"--------"+"----------"+new Date().getTime()+"-------"+uuid(),{
-    lower:true,
-    trim:true,
-    replacement:''
+export const generateSlug = (str) => {
+    // Clean the title first
+    const cleanTitle = slugify(str, {
+        lower: true,
+        strict: true,
+        remove: /[*+~.()'"!:@]/g
+    })
     
-})
+    // Generate a short unique ID (8 characters)
+    const shortId = uuid().replace(/-/g, '').substring(0, 8)
+    
+    // Combine title with short unique ID
+    return `${cleanTitle}-${shortId}`
+}

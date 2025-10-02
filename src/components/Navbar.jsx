@@ -13,7 +13,7 @@ const Navbar = () => {
   const {logoutHandler} = useMainContext()
 
   return (
-    <header className='w-full bg-section py-5'>
+    <header className='w-full bg-section py-5 fixed top-0  z-10'>
         <nav className='w-[96%] lg:w-[90%] xl:[80%] mx-auto flex justify-between items-center'>
             <Logo/>
 

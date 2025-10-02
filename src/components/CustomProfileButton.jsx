@@ -27,7 +27,7 @@ export default function CustomProfileButton() {
         <MenuItems
           transition
           anchor="bottom end"
-          className="w-52 origin-top-right rounded-xl border border-white/5 bg-white p-1 text-sm/6 text-main transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
+          className="w-52 origin-top-right rounded-xl border mt-5 border-white/5 bg-white p-1 text-sm/6 text-main transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
         >
        
          <MenuItem>

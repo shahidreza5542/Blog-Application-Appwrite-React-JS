@@ -79,7 +79,7 @@ const SingleBlogPage = () => {
 
   return (
     
-    <section className='py-10 w-full'>
+    <section className='py-10 w-full mt-16'>
 
         
       <Helmet>

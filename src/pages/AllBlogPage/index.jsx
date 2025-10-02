@@ -60,7 +60,7 @@ const AllBlogPage = () => {
   return (
     <>
 
-            <div className="container mx-auto py-10">
+            <div className="container mx-auto py-10 mt-16">
 
 
                 <div className="flex py-10 bg-black/10 rounded w-full flex-col gap-y-4 ">

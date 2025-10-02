@@ -70,7 +70,7 @@ const BasicInformation = () => {
     validationSchema={validationSchema}
     initialValues={initialValues}
     >
-        <Form className=' w-[96%] md:w-1/2 lg:w-1/3 py-3 px-3 mx-auto'>
+        <Form className=' w-[96%] md:w-1/2 lg:w-1/3 py-3 px-3 mx-auto mt-16'>
             <div className="mb-3">
                 <label htmlFor="name">Name</label>
                 <Field type="text" name="name" className='w-full placeholder:font-psmbold py-2 bg-black/40 rounded px-2 outline-none focus:border-b focus:rounded-none border-btn transition-all duration-300' placeholder='Enter Your Name' id="name" />

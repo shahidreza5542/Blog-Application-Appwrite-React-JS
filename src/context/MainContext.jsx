@@ -22,40 +22,51 @@ const navigate = useNavigate()
 const [checkOnce,SetCheckOnece] = useState(true)
     const authuser = useSelector(AuthSlicePath)
 
-
  const [blogs,setBlogs] = useState([]) 
  const [allBlogs,setAllBlogs] = useState([]) 
 
 
-
-  const fetchAllHomeBlogs = async()=>{
+    const fetchAllHomeBlogs = async() => {
         try {
-           
-            const data = await  appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID,ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID,[ 
-              Query.equal("status",true),
-                Query.select(['description',
-                      'image',
-                      'slug',
-                      'status',
-                      'title',
-                      'tags',
-                      'user'
-
-                ])
+            console.log(' Fetching blogs...')
+            
+            // Add timeout for blog fetching too
+            const blogPromise = Promise.race([
+                appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID, ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, [ 
+                    Query.equal("status", true),
+                    Query.limit(20), // Limit to 20 blogs for faster loading
+                    Query.orderDesc('$createdAt'), // Get latest first
+                    Query.select([
+                        'description',
+                        'image', 
+                        'slug',
+                        'status',
+                        'title',
+                        'tags',
+                        'user',
+                        '$createdAt'
+                    ])
+                ]),
+                new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Blog fetch timeout')), 4000)
+                )
             ])
 
+            const data = await blogPromise
             setAllBlogs(data.documents)
+            console.log(`Loaded ${data.documents.length} blogs`)
+            
         } catch (error) {
             console.log('fetchAllHomeBlogs error:', error)
-            // Only show error if it's not a permission issue
-            if (error.code !== 401) {
-                toast.error(error.message)
+            
+            if (error.message === 'Blog fetch timeout') {
+                console.warn('Blog fetch timed out')
+                toast.error('Blogs loading slowly. Please refresh if needed.')
+            } else if (error.code !== 401) {
+                toast.error('Failed to load blogs')
             }
         } 
     }
-
-
-
 
     const fetchAllBlog = async()=>{
         try {
@@ -99,53 +110,79 @@ const [checkOnce,SetCheckOnece] = useState(true)
   }
 
   const fetchUser = async () => {
+    const timeoutId = setTimeout(() => {
+      if (checkOnce) {
+        setLoading(false)
+        SetCheckOnece(false)
+        console.warn('User fetch timeout - continuing without user')
+      }
+    }, 5000) // 5 second timeout
+
     try {
       if (checkOnce) {
         setLoading(true)
       }
       
       console.log('Fetching user from Appwrite...')
-      const user = await appwriteAccount.get()
-      console.log('Fetched user from Appwrite:', user)
       
-      // Try to get user profile
-      try {
-        const profile = await checkExistProfile(user.$id)
-        user['profile'] = {
-          ...profile,
-          // Fallback to user's name from account if profile name doesn't exist
-          name: profile?.name || user.name || 'Anonymous User'
-        }
-        console.log('Profile found:', user.profile)
-      } catch (profileError) {
-        console.log('Profile check failed, using default profile:', profileError)
-        // Create a default profile object
-        user['profile'] = {
+      // Add timeout to the user fetch
+      const userPromise = Promise.race([
+        appwriteAccount.get(),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('User fetch timeout')), 3000)
+        )
+      ])
+      
+      const user = await userPromise
+      console.log('✅ User fetched successfully:', user.name || user.email)
+      
+      // Set user immediately without waiting for profile
+      dispatch(setUser({
+        ...user,
+        profile: {
           bio: '',
           name: user.name || 'Anonymous User',
           user: user.$id
         }
-      }
-
-      dispatch(setUser(user))
-      console.log('User set in context:', user)
+      }))
+      
+      // Fetch profile in background (non-blocking)
+      checkExistProfile(user.$id)
+        .then(profile => {
+          if (profile) {
+            dispatch(setUser({
+              ...user,
+              profile: {
+                ...profile,
+                name: profile.name || user.name || 'Anonymous User'
+              }
+            }))
+            console.log('✅ Profile updated:', profile.name)
+          }
+        })
+        .catch(profileError => {
+          console.log('Profile fetch failed (non-critical):', profileError)
+        })
    
     } catch (error) {
       console.log('fetchUser error:', error)
       
-      // Handle network errors specifically
-      if (error.message?.includes('fetch') || error.name === 'TypeError') {
+      if (error.message === 'User fetch timeout') {
+        console.warn('⚠️ User fetch timed out')
+        if (checkOnce) {
+          toast.error('Connection slow. Please refresh if needed.')
+        }
+      } else if (error.message?.includes('fetch') || error.name === 'TypeError') {
         console.error('Network error during user fetch:', error)
-        // Don't remove user state on network errors, just log it
         if (checkOnce) {
           toast.error('Network error. Please check your connection.')
         }
       } else if (error.code === 401 || error.type === 'general_unauthorized_scope') {
-        // Only remove user if there's no valid session
         dispatch(removeUser())
         setBlogs([])
       }
     } finally {
+      clearTimeout(timeoutId)
       setLoading(false)
       SetCheckOnece(false)
     }

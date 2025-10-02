@@ -102,7 +102,7 @@ const RegisterPage = () => {
                 <title>Blogi | Regsiter Page</title>
                 <link rel="canonical" href={window.location.href} /> 
       </Helmet>
-      <section className="min-h-[60vh] flex items-center justify-center">
+      <section className="min-h-[60vh] flex items-center justify-center mt-16">
      
      <Formik
       validationSchema={validationSchema}

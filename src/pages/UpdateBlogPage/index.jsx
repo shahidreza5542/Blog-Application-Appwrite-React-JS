@@ -100,7 +100,7 @@ const UpdateBlogPage = () => {
 
   return (
     <>
-            <div className="my-10 flex  flex-col items-center justify-center min-h-[60vh]">
+            <div className="my-10 flex  flex-col items-center justify-center min-h-[60vh] mt-16">
                
               <Formik
                 initialValues={initialValues}

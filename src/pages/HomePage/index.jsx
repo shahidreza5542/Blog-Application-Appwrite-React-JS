@@ -1,54 +1,87 @@
 import React, { useEffect, useState } from 'react'
 import { useMainContext } from '../../context/MainContext'
 import HomeBlogCard from './HomeBlogCard'
+import SkeletonLoader from '../../components/SkeletonLoader'
 import { CgSearch } from 'react-icons/cg'
 
 const HomePage = () => { 
 
-  const {allBlogs,fetchAllHomeBlogs} = useMainContext()
+  const {allBlogs, fetchAllHomeBlogs} = useMainContext()
+  const [search, setSearch] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
-  const [search,setSearch] = useState('')
+  // Check loading state when blogs change
+  useEffect(() => {
+    if (allBlogs.length > 0) {
+      setIsLoading(false)
+    }
+  }, [allBlogs])
 
-  const filterBlogs = allBlogs.length <= 0? [] : allBlogs.filter((cur,i)=>{
-    if(!search){
+  // Auto-hide loading after 3 seconds even if no blogs
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const filterBlogs = allBlogs.length <= 0 ? [] : allBlogs.filter((cur, i) => {
+    if (!search) {
       return true
     }
-    const x = cur.title?.toLowerCase()
-    const y = cur.description?.toLowerCase()
-    const z = cur.tags?.toLowerCase()
+    const x = cur.title?.toLowerCase() || ''
+    const y = cur.description?.toLowerCase() || ''
+    const z = cur.tags?.toLowerCase() || ''
     const alpha = search.toLowerCase()
 
     return x.includes(alpha) || y.includes(alpha) || z.includes(alpha)
-
-
   })
  
-    
   return (
-    <>
+    <div className="min-h-screen bg-black mt-16">
+      <div className="container mx-auto px-4 py-8">
+        {/* Search Bar */}
+        <div className="mb-8 flex justify-center">
+          <div className="w-full max-w-md border border-gray-600 py-3 px-4 rounded-lg flex items-center bg-section hover:border-btn transition-colors duration-200">
+            <input 
+              value={search} 
+              onChange={(e) => setSearch(e.target.value)} 
+              type="text" 
+              className="w-full bg-transparent outline-none text-white placeholder-gray-400" 
+              placeholder="Search blogs..." 
+            />
+            <CgSearch className="text-2xl text-gray-400" />
+          </div>
+        </div>
 
-
-            <div className="grid min-h-[80vh] w-[98%] lg:w-[80%] mx-auto grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-3">
-            <div className="pt-10 pb-4 col-span-1 lg:col-span-2 xl:col-span-3 flex items-center justify-end">
-              <div className=" w-full xl:w-1/3 border py-3 px-4 rounded flex items-center justify-center hover:border-btn  ">
-              <input value={search} onChange={(e)=>setSearch(e.target.value)} type="text" className=' w-full outline-none ' placeholder='Search....' />
-              <CgSearch className='text-3xl ' />
+        {/* Content */}
+        {isLoading ? (
+          <SkeletonLoader />
+        ) : (
+          <>
+            {allBlogs && filterBlogs.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filterBlogs.map((cur, i) => (
+                  <HomeBlogCard key={cur.$id || i} data={cur} />
+                ))}
               </div>
-            </div>
-
-                  {
-                    allBlogs && filterBlogs.length>0 ?filterBlogs.map((cur,i)=>{
-                      return <HomeBlogCard key={i}  data={cur} />
-                    }):
-                    <>
-                       <div className="py-10 text-center col-span-1 lg:col-span-2 xl:col-span-3">
-                         <h1 className='text-5xl font-pblack '> Not Found <span className='text-btn'>!</span> </h1>
-                       </div>
-                    </>
-                  }
-
-            </div>
-    </>
+            ) : (
+              <div className="py-20 text-center">
+                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                  {search ? 'No Results Found' : 'No Blogs Available'}
+                  <span className="text-btn">!</span>
+                </h1>
+                {search && (
+                  <p className="text-gray-400 mt-4">
+                    Try searching with different keywords
+                  </p>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
   )
 }
 
