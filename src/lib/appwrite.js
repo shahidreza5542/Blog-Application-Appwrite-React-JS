@@ -3,18 +3,22 @@ import { ENVObj } from './constant';
 
 export const client = new Client();
 
-// Add error handling and logging for debugging
-try {
-  client
-    .setEndpoint(ENVObj.VITE_APPWRITE_ENDPOINT)
-    .setProject(ENVObj.VITE_APPWRITE_PROJECT_ID);
-  
-  console.log('Appwrite client initialized:', {
-    endpoint: ENVObj.VITE_APPWRITE_ENDPOINT,
-    project: ENVObj.VITE_APPWRITE_PROJECT_ID
-  });
-} catch (error) {
-  console.error('Failed to initialize Appwrite client:', error);
+// Only initialize Appwrite client in browser environment
+if (typeof window !== 'undefined') {
+  try {
+    client
+      .setEndpoint(ENVObj.VITE_APPWRITE_ENDPOINT)
+      .setProject(ENVObj.VITE_APPWRITE_PROJECT_ID);
+    
+    console.log('Appwrite client initialized:', {
+      endpoint: ENVObj.VITE_APPWRITE_ENDPOINT,
+      project: ENVObj.VITE_APPWRITE_PROJECT_ID
+    });
+  } catch (error) {
+    console.error('Failed to initialize Appwrite client:', error);
+  }
+} else {
+  console.log('Skipping Appwrite initialization during build');
 }
 
 export const appwriteAccount = new Account(client);

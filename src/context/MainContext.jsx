@@ -150,11 +150,17 @@ const [checkOnce,SetCheckOnece] = useState(true)
       SetCheckOnece(false)
     }
   }
-  useEffect(()=>{
-    fetchUser()
-    fetchAllHomeBlogs()
-    
-  },[])
+  useEffect(() => {
+    // Only run API calls in browser environment, not during build
+    if (typeof window !== 'undefined') {
+      fetchUser()
+      fetchAllHomeBlogs()
+    } else {
+      // During build time, just set loading to false
+      setLoading(false)
+      SetCheckOnece(false)
+    }
+  }, [])
 
 
 
