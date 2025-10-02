@@ -29,47 +29,64 @@ const LoginPage = () => {
     password:''
   }
 
-  const onSubmitHandler = async(values,helpers)=>{
-    try{
+  const onSubmitHandler = async(values, helpers) => {
+    try {
       setLoading(true)
+      
+      console.log('Login attempt started...')
+      console.log('Environment check:', {
+        endpoint: import.meta.env.VITE_APPWRITE_ENDPOINT,
+        projectId: import.meta.env.VITE_APPWRITE_PROJECT_ID
+      })
+      
+      // Clear any existing sessions first
       try {
         const old_user = await appwriteAccount.get()
-        if(old_user){
-          await appwriteAccount.deleteSession('current');
-                dispatch(removeUser())
-          
+        if (old_user) {
+          console.log('Clearing existing session...')
+          await appwriteAccount.deleteSession('current')
+          dispatch(removeUser())
         }
       } catch (error) {
-        
+        console.log('No existing session to clear')
       }
  
-        //ye kaam karna hain
-        await appwriteAccount.createEmailPasswordSession(values.email,values.password)
-        await fetchUser()
-        
-        // Small delay to ensure state is updated
-        setTimeout(() => {
-          navigate("/")
-          toast.success("Login Success")
-        }, 100)
+      // Create new session
+      console.log('Creating new session...')
+      const session = await appwriteAccount.createEmailPasswordSession(
+        values.email, 
+        values.password
+      )
+      console.log('Session created successfully:', session)
       
-    // const user = await appwriteAccount.get()
-    //     dispatch(setUser(user))
-        
-
-    }catch(e){
-      if(e.type=="user_already_exists"){
-        toast.error("User Alredy Exist")
-
-      }else if(e.type=="general_rate_limit_exceeded"){
-        toast.error("Something Wrong From Backend So kindly ruk jao bhai...😋")
-      }
+      // Fetch user data
+      console.log('Fetching user data...')
+      await fetchUser()
       
-      else{
-
-        toast.error(e.message)
+      // Navigate after successful login
+      setTimeout(() => {
+        navigate("/")
+        toast.success("Login Success")
+      }, 100)
+      
+    } catch (error) {
+      console.error('Login error:', error)
+      
+      // Handle specific error types
+      if (error.type === "user_invalid_credentials") {
+        toast.error("Invalid email or password")
+      } else if (error.type === "general_rate_limit_exceeded") {
+        toast.error("Too many attempts. Please try again later.")
+      } else if (error.type === "general_unauthorized_scope") {
+        toast.error("Authentication failed. Please check your credentials.")
+      } else if (error.message?.includes('fetch')) {
+        toast.error("Network error. Please check your internet connection and try again.")
+      } else if (error.code === 401) {
+        toast.error("Authentication failed. Please try again.")
+      } else {
+        toast.error(error.message || "Login failed. Please try again.")
       }
-    }finally{
+    } finally {
       setLoading(false)
     }
   }

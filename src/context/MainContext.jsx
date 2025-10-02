@@ -98,35 +98,54 @@ const [checkOnce,SetCheckOnece] = useState(true)
       }
   }
 
-  const fetchUser=async()=>{
+  const fetchUser = async () => {
     try {
-     
-      if(checkOnce){
+      if (checkOnce) {
         setLoading(true)
       }
-       const user = await appwriteAccount.get()
-       console.log('Fetched user from Appwrite:', user)
-       
-       try {
-         const profile = await checkExistProfile(user.$id)
-         user['profile'] = profile
-         console.log('Profile found:', profile)
-       } catch (profileError) {
-         console.log('Profile check failed:', profileError)
-         user['profile'] = null
-       }
+      
+      console.log('Fetching user from Appwrite...')
+      const user = await appwriteAccount.get()
+      console.log('Fetched user from Appwrite:', user)
+      
+      // Try to get user profile
+      try {
+        const profile = await checkExistProfile(user.$id)
+        user['profile'] = {
+          ...profile,
+          // Fallback to user's name from account if profile name doesn't exist
+          name: profile?.name || user.name || 'Anonymous User'
+        }
+        console.log('Profile found:', user.profile)
+      } catch (profileError) {
+        console.log('Profile check failed, using default profile:', profileError)
+        // Create a default profile object
+        user['profile'] = {
+          bio: '',
+          name: user.name || 'Anonymous User',
+          user: user.$id
+        }
+      }
 
-       dispatch(setUser(user))
-       console.log('User set in context:', user)
+      dispatch(setUser(user))
+      console.log('User set in context:', user)
    
     } catch (error) {
       console.log('fetchUser error:', error)
-      // Only remove user if there's no valid session
-      if (error.code === 401 || error.type === 'general_unauthorized_scope') {
+      
+      // Handle network errors specifically
+      if (error.message?.includes('fetch') || error.name === 'TypeError') {
+        console.error('Network error during user fetch:', error)
+        // Don't remove user state on network errors, just log it
+        if (checkOnce) {
+          toast.error('Network error. Please check your connection.')
+        }
+      } else if (error.code === 401 || error.type === 'general_unauthorized_scope') {
+        // Only remove user if there's no valid session
         dispatch(removeUser())
         setBlogs([])
       }
-    }finally{
+    } finally {
       setLoading(false)
       SetCheckOnece(false)
     }
