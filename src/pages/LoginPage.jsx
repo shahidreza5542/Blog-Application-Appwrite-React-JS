@@ -88,7 +88,7 @@ const LoginPage = () => {
       initialValues={initialValues}
       onSubmit={onSubmitHandler}
      >
-       <Form action="" className='min-h-[80vh] w-[96%] sm:w-[90%] md:w-1/2 lg:w-1/3 my-5 mx-auto py-5 px-4 border border-btn rounded'>
+       <Form action="" className='w-[96%] sm:w-[90%] md:w-1/2 lg:w-1/3 my-5 mx-auto py-5 px-4 border border-btn rounded'>
             <Logo/>
 
     
