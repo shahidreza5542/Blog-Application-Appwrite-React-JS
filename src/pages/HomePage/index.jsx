@@ -35,8 +35,6 @@ const HomePage = () => {
     const description = cur.description?.toLowerCase() || ''
     const tags = cur.tags?.toLowerCase() || ''
     
-    console.log('Searching for:', searchTerm, 'in:', { title, description, tags })
-    
     const matches = title.includes(searchTerm) || 
                    description.includes(searchTerm) || 
                    tags.includes(searchTerm)
@@ -52,10 +50,7 @@ const HomePage = () => {
           <div className="w-full max-w-md border border-gray-600 py-3 px-4 rounded-lg flex items-center bg-section hover:border-btn transition-colors duration-200">
             <input 
               value={search} 
-              onChange={(e) => {
-                console.log('Search input changed:', e.target.value)
-                setSearch(e.target.value)
-              }} 
+              onChange={(e) => setSearch(e.target.value)} 
               type="text" 
               className="w-full bg-transparent outline-none text-white placeholder-gray-400" 
               placeholder="Search blogs..." 

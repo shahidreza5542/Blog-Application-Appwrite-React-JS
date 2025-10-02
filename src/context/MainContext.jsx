@@ -24,18 +24,17 @@ const [checkOnce,SetCheckOnece] = useState(true)
 
  const [blogs,setBlogs] = useState([]) 
  const [allBlogs,setAllBlogs] = useState([]) 
-
-
     const fetchAllHomeBlogs = async() => {
         try {
             console.log('📚 Fetching blogs...')
             
-            // Add timeout for blog fetching (increased to 8 seconds)
-            const blogPromise = Promise.race([
-                appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID, ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, [ 
+            const data = await appWriteDB.listDocuments(
+                ENVObj.VITE_APPWRITE_DB_ID, 
+                ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, 
+                [ 
                     Query.equal("status", true),
-                    Query.limit(20), // Limit to 20 blogs for faster loading
-                    Query.orderDesc('$createdAt'), // Get latest first
+                    Query.limit(15), // Reduced to 15 for faster loading
+                    Query.orderDesc('$createdAt'),
                     Query.select([
                         'description',
                         'image', 
@@ -46,40 +45,34 @@ const [checkOnce,SetCheckOnece] = useState(true)
                         'user',
                         '$createdAt'
                     ])
-                ]),
-                new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Blog fetch timeout')), 8000)
-                )
-            ])
+                ]
+            )
 
-            const data = await blogPromise
             setAllBlogs(data.documents)
-            console.log(`Loaded ${data.documents.length} blogs`)
+            console.log(`✅ Loaded ${data.documents.length} blogs`)
             
         } catch (error) {
             console.log('fetchAllHomeBlogs error:', error)
             
-            if (error.message === 'Blog fetch timeout') {
-                console.warn('Blog fetch timed out')
-                toast.error('Blogs loading slowly. Please refresh if needed.')
-            } else if (error.code !== 401) {
-                toast.error('Failed to load blogs')
+            // Only show error for non-permission issues
+            if (error.code !== 401) {
+                console.warn('⚠️ Blog fetch failed, continuing with empty state')
+                setAllBlogs([]) // Set empty array instead of showing error
             }
         } 
     }
 
-    const fetchAllBlog = async()=>{
+    const fetchAllBlog = async() => {
         try {
-           
-            const data = await  appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID,ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID,[
-                Query.equal('user',authuser.$id),
-                Query.select(['description',
-                      'image',
-                      'slug',
-                      'status',
-                      'title',
-                      'tags'
-
+            const data = await appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID, ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, [
+                Query.equal('user', authuser.$id),
+                Query.select([
+                    'description',
+                    'image',
+                    'slug',
+                    'status',
+                    'title',
+                    'tags'
                 ])
             ])
 
