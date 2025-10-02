@@ -24,87 +24,91 @@ const HomeBlogCard = memo(({ data }) => {
     
     const userInitial = data?.user ? data.user.charAt(0).toUpperCase() : 'A'
     
-    return { image, tags, formattedDate, truncatedDescription, userInitial }
   }, [data])
 
   return (
     <Link 
       to={`/blog/${data.slug}`} 
-      className="group block w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+      className="group block w-full h-full transform transition-all duration-200 hover:scale-[1.01] hover:shadow-xl"
     >
-      <article className="relative h-full flex flex-col bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-indigo-500/50 transition-all duration-300">
+      <article className="relative h-full flex flex-col bg-section rounded-xl overflow-hidden border border-btn/20 hover:border-btn/60 transition-all duration-200 shadow-lg">
         
-        {/* Image */}
-        <div className="relative h-40 sm:h-48 md:h-56 lg:h-64 overflow-hidden">
+        {/* Image Container */}
+        <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden">
           <img 
             src={image}
             alt={data.title || 'Blog post'}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
             onError={(e) => {
               e.target.onerror = null
-              e.target.src = 'https://via.placeholder.com/800x450/1f2937/9ca3af?text=Image+Not+Found'
+              e.target.src = `https://via.placeholder.com/800x450/${encodeURIComponent('1d1d21')}/${encodeURIComponent('fd366e')}?text=No+Image`
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-main/80 via-transparent to-transparent" />
           
-          {/* Badge */}
+          {/* Status Badge */}
           <div className="absolute top-3 right-3">
-            <span className="px-2 py-1 text-[10px] sm:text-xs font-medium bg-green-500/90 text-white rounded-full backdrop-blur-sm">
+            <span className="px-2 py-1 text-[10px] sm:text-xs font-medium bg-btn text-white rounded-full backdrop-blur-sm font-psmbold">
               Published
             </span>
           </div>
         </div>
 
         {/* Content */}
-        <div className="flex-1 flex flex-col p-3 sm:p-4 md:p-5">
+        <div className="flex-1 flex flex-col p-3 sm:p-4">
           
           {/* Title */}
-          <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-2 sm:mb-3 line-clamp-2 group-hover:text-indigo-400 transition-colors duration-300">
+          <h3 className="text-base sm:text-lg font-psmbold text-white mb-2 line-clamp-2 group-hover:text-btn transition-colors duration-200">
             {data.title || 'Untitled Post'}
           </h3>
           
           {/* Description */}
-          <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 flex-1">
+          <p className="text-white/70 text-sm leading-relaxed mb-3 line-clamp-2 flex-1 font-pregular">
             {truncatedDescription}
           </p>
           
           {/* Tags */}
           {tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
-              {tags.map((tag, i) => (
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {tags.slice(0, 2).map((tag, i) => (
                 <span 
                   key={i}
-                  className="px-2 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs md:text-sm font-medium bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30 hover:bg-indigo-500/30 hover:text-white transition-colors duration-200"
+                  className="px-2 py-0.5 text-[10px] sm:text-xs font-medium bg-btn/20 text-btn rounded-full border border-btn/30 hover:bg-btn/30 transition-colors duration-200 font-psmbold"
                 >
                   #{tag.trim()}
                 </span>
               ))}
+              {tags.length > 2 && (
+                <span className="px-2 py-0.5 text-[10px] text-white/50 font-pregular">
+                  +{tags.length - 2}
+                </span>
+              )}
             </div>
           )}
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-700/50">
+          <div className="flex items-center justify-between pt-3 border-t border-white/10">
             
             {/* User */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm">
+            <div className="flex items-center space-x-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-btn to-btn-hover flex items-center justify-center text-white font-bold text-xs font-psmbold">
                 {userInitial}
               </div>
               <div className="flex flex-col">
-                <span className="text-xs sm:text-sm font-medium text-gray-200">
+                <span className="text-xs font-medium text-white font-psmbold">
                   Anonymous User
                 </span>
-                <span className="text-[10px] sm:text-xs text-gray-400">
+                <span className="text-[10px] text-white/60 font-pregular">
                   {formattedDate}
                 </span>
               </div>
             </div>
             
             {/* Read More */}
-            <div className="flex items-center text-indigo-400 group-hover:text-indigo-300 transition-colors duration-300">
-              <span className="text-xs sm:text-sm font-medium mr-1">Read</span>
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center text-btn group-hover:text-btn-hover transition-colors duration-200">
+              <span className="text-xs font-medium mr-1 font-psmbold">Read</span>
+              <svg className="w-3 h-3 transform group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </div>
