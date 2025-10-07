@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
 import Error404 from '../../components/Error404'
-import PermissionError from '../../components/PermissionError'
 import LoaderComponent from '../../components/LoaderComponent'
 import { appWriteDB, appWriteStorage } from '../../lib/appwrite'
 import { ENVObj } from '../../lib/constant'
@@ -17,21 +16,17 @@ const SingleBlogPage = () => {
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [permissionError, setPermissionError] = useState(false)
   const [blog, setBlog] = useState(null)
 
 
   const fetchBlog = async () => {
     try {
-      setLoading(true)
-      console.log('🔍 Fetching blog with slug:', params.slug)
-      
-      // Try without status filter first to see if document exists
-      const blog = await appWriteDB.listDocuments(
-        ENVObj.VITE_APPWRITE_DB_ID, 
-        ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, 
-        [Query.equal("slug", params.slug)]
-      )
+      // setLoading(true)
+
+      const blog = await appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID, ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, [
+        Query.equal("slug", params.slug),
+        Query.equal("status", true)
+      ])
       // Check if blog exists
       if (!blog.documents || blog.documents.length === 0) {
         console.log('Blog not found')
@@ -62,22 +57,9 @@ const SingleBlogPage = () => {
 
 
     } catch (error) {
-      console.log('❌ SingleBlogPage fetch error:', error)
-      
-      // Handle permission errors specifically
-      if (error.code === 401 || error.message?.includes('missing scopes') || error.message?.includes('collections.read')) {
-        console.error('🔒 Permission denied - User lacks collection read permissions')
-        setPermissionError(true)
-        toast.error('Access denied. Please check your permissions.')
-      } else if (error.code === 404) {
-        console.log('📄 Blog not found')
-        setError(true)
-        toast.error('Blog post not found')
-      } else {
-        console.error('💥 Unexpected error:', error)
-        setError(true)
-        toast.error('Failed to load blog post')
-      }
+      console.log('SingleBlogPage fetch error:', error)
+      setError(true)
+      toast.error(error.message)
     } finally {
       setLoading(false)
     }
@@ -91,9 +73,6 @@ const SingleBlogPage = () => {
 
   if (loading) {
     return <LoaderComponent />
-  }
-  if (permissionError) {
-    return <PermissionError message="You don't have permission to read blog posts. Please contact the administrator." />
   }
   if (error || !blog) {
     return <Error404 />
@@ -128,7 +107,7 @@ const SingleBlogPage = () => {
           <h1 className="text-start font-pblack text-3xl">{blog?.title || 'Untitled Post'}</h1>
 
 
-          <div className="flex items-center px-4 py-2  mt-5">
+          <div className="flex items-center px-4 py-2  mt-5 ">
             {profileimage && <img alt={userName} src={profileimage} className="relative inline-block h-8 w-8 rounded-full" />}
             <div className="flex flex-col ml-3 text-sm">
               <span className="text-zinc-200 font-semibold">{userName}</span>
