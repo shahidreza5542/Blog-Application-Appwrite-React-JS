@@ -1,23 +1,47 @@
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 import {useDropzone} from 'react-dropzone'
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import {MdClose} from 'react-icons/md'
+import toast from 'react-hot-toast'
 
 export default function UploadImage({value,setValue}) {
-  const onDrop = useCallback(acceptedFiles => {
-    if(acceptedFiles.length>0){
-        setValue(acceptedFiles[0])
+  const onDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0]
+    
+    // Security check: validate file type and size
+    if (file) {
+      // Check file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']
+      if (!allowedTypes.includes(file.type)) {
+        toast.error('Only image files (JPEG, PNG, WebP, GIF) are allowed')
+        return
+      }
+      
+      // Check file size (max 5MB)
+      const maxSize = 5 * 1024 * 1024 // 5MB
+      if (file.size > maxSize) {
+        toast.error('File size must be less than 5MB')
+        return
+      }
+      
+      // Check for suspicious file names
+      const suspiciousExtensions = ['.exe', '.bat', '.cmd', '.scr', '.pif', '.com', '.js', '.vbs']
+      const fileName = file.name.toLowerCase()
+      if (suspiciousExtensions.some(ext => fileName.includes(ext))) {
+        toast.error('File type not allowed for security reasons')
+        return
+      }
+      
+      setValue(file)
     }
-    // Do something with the files
-  }, []) 
-
+  }, [setValue]) 
 
   const {getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
-    accept:{ 
+    accept: {
       'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.bmp', '.webp']
     },
-    multiple:false
+    multiple: false
   })
 
   return (
