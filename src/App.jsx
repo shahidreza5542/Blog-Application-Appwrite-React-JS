@@ -15,6 +15,8 @@ import AllBlogPage from './pages/AllBlogPage'
 import UpdateBlogPage from './pages/UpdateBlogPage'
 import SingleBlogPage from './pages/SingleBlogPage'
 import AboutPage from './pages/AboutPage'
+import Terms from './components/Terms'
+import Privacy from './components/Privacy'
 const App = () => {
   return (
     <>
@@ -35,6 +37,8 @@ const App = () => {
           <Route path='/register' Component={RegisterPage} />
           <Route path='/about' Component={AboutPage} />
           <Route path='*' Component={ErrorPage} />
+          <Route path='/terms' Component={Terms}/>
+          <Route path='/privacy' Component={Privacy} />
         </Routes>
         <Footer />
       </MainContextProvider>
