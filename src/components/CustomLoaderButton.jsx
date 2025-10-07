@@ -10,7 +10,7 @@ const CustomLoaderButton = ({
     text
 }) => {
   return (
-    <button type={type} disabled={isLoading} className={clsx(className,'w-full bg-btn flex items-center justify-center gap-x-1 outline-none cursor-pointer disabled:cursor-auto transition-all duration-100 disabled:bg-rose-800 hover:bg-btn-hover text-white py-2 rounded ')}>
+    <button type={type} disabled={isLoading} className={clsx(className,'w-full bg-btn flex items-center justify-center gap-x-1 outline-none cursor-pointer disabled:cursor-auto transition-all duration-100 disabled:bg-btn-hover hover:bg-btn-hover text-white py-2 rounded ')}>
             <span>{text}</span>
             {
               isLoading?  <CgSpinner className='animate-spin' /> :<FaArrowRight/>

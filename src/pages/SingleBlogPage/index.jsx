@@ -24,10 +24,14 @@ const SingleBlogPage = () => {
   const fetchBlog = async () => {
     try {
       setLoading(true)
-      const blog = await appWriteDB.listDocuments(ENVObj.VITE_APPWRITE_DB_ID, ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, [
-        Query.equal("slug", params.slug),
-        Query.equal("status", true)
-      ])
+      console.log('🔍 Fetching blog with slug:', params.slug)
+      
+      // Try without status filter first to see if document exists
+      const blog = await appWriteDB.listDocuments(
+        ENVObj.VITE_APPWRITE_DB_ID, 
+        ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, 
+        [Query.equal("slug", params.slug)]
+      )
       // Check if blog exists
       if (!blog.documents || blog.documents.length === 0) {
         console.log('Blog not found')

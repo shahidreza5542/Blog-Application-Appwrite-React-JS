@@ -24,11 +24,11 @@ const LoaderComponent = () => {
     <div className="flex items-center justify-center min-h-screen flex-col bg-black">
       <div className="text-center">
         <div
-          title="Blogi"
+          title="DevHive"
           className="font-pbold text-5xl lg:text-7xl flex items-center justify-center gap-x-2 text-white"
         >
           <FaLaptopCode className="text-btn" />
-          <span>Devio</span>
+          <span>DevHive</span>
           <span className="w-2 h-2 rounded-full bg-btn animate-bounce"></span>
         </div>
 
