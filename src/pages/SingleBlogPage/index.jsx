@@ -59,7 +59,6 @@ const SingleBlogPage = () => {
     } catch (error) {
       console.log('SingleBlogPage fetch error:', error)
       setError(true)
-      toast.error(error.message)
     } finally {
       setLoading(false)
     }
