@@ -15,7 +15,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <header className='w-full bg-section py-2 fixed top-0 z-20'>
+    <header className='w-full bg-section py-3 fixed top-0 z-20'>
       <nav className='w-[95%] lg:w-[90%] xl:w-[80%] mx-auto flex justify-between items-center'>
         <Logo />
 
@@ -31,16 +31,16 @@ const Navbar = () => {
           'flex flex-col justify-center items-center lg:flex-row lg:items-center lg:gap-x-4 lg:static lg:max-h-full lg:w-auto lg:justify-between absolute top-full left-0 w-full bg-section overflow-hidden',
           mobileOpen ? 'max-h-96 py-4' : 'max-h-0'
         )}>
-          <li className='px-4 py-2 lg:p-0'>
+          <li className='px-3 py-2 lg:p-0'>
             <NavbarLink to='/' title='Home' />
           </li>
-          <li className='px-4 py-2 lg:p-0'>
+          <li className='px-3 py-2 lg:p-0'>
             <NavbarLink to='/about' title='About' />
           </li>
-          <li className='px-4 py-2 lg:p-0'>
+          <li className='px-3 py-2 lg:p-0'>
             <ThemeToggle />
           </li>
-          <li className='px-4 py-2 lg:p-0'>
+          <li className='px-3 py-2 lg:p-0'>
             {user ? <CustomProfileButton /> :
               <Link to='/login' className='bg-btn px-4 py-2 hover:bg-btn-hover transition-all duration-300 rounded'>Login</Link>
             }
