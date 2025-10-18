@@ -1,35 +1,61 @@
 @import 'tailwindcss';
-
 @plugin "@tailwindcss/typography";
 
-@theme {
-  --color-main: #F5F5F5;
-  /* main background - very light */
-  --color-section: #EEEEEE;
-  /* section background - slightly darker */
-  --color-btn: #86198F;
-  /* button color */
-  --color-btn-hover: #A14BBF;
-  /* button hover */
-  --color-text: #131315;
-  /* headings / strong text - dark */
-  --color-p: #333333;
-  /* paragraphs - slightly lighter than text */
+:root {
+  --color-main: #F8FAFC;
+  --color-section: #F1F5F9;
+  --color-btn: #8B5CF6;
+  --color-btn-hover: #7C3AED;
+  --color-text: #0F172A;
+  --color-p: #334155;
 
   --font-pregular: Poppins-Regular;
   --font-pbold: Poppins-Bold;
   --font-pblack: Poppins-Black;
   --font-psmbold: Poppins-SemiBold;
   --font-pmdium: Poppins-Medium;
+}
 
+[data-theme="dark"] {
+  --color-main: #1E1E2F;
+  --color-section: #2C2C3E;
+  --color-btn: #9333EA;
+  --color-btn-hover: #7C3AED;
+  --color-text: #F5F5F5;
+  --color-p: #D4D4D8;
 }
 
 body {
-  @apply bg-main text-text font-pregular;
-  font-family: 'Times New Roman', Times, serif;
+  background-color: var(--color-main);
+  color: var(--color-text);
+  font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: all 0.3s;
+}
+
+.bg-section {
+  background-color: var(--color-section);
+}
+
+.bg-btn {
+  background-color: var(--color-btn);
+}
+
+.bg-btn:hover {
+  background-color: var(--color-btn-hover);
+}
+
+.text-text {
+  color: var(--color-text);
+}
+
+.text-p {
+  color: var(--color-p);
 }
 
 .prose {
+  @apply max-w-none;
   overflow: hidden;
 }
 
@@ -38,21 +64,45 @@ h2,
 h3,
 h4,
 h5,
-h6,
-ul,
-ol,
-table,
-tr,
-td,
-th {
-  @apply !text-text;
-  font-family: sans-serif;
+h6 {
+  color: var(--color-text);
+  font-family: 'Open Sans', system-ui, sans-serif;
 }
-p {
-  @apply !text-p
-  font-family: sans-serif;
+
+.prose p,
+ul,
+ol {
+  color: var(--color-p);
+  font-family: 'Open Sans', system-ui, sans-serif;
 }
 
 .prose img {
-  @apply mx-auto hover:scale-105 transition-all duration-300;
+  @apply mx-auto rounded-lg shadow-sm hover:scale-[1.02] transition-all duration-300;
+}
+
+.prose table {
+  color: var(--color-text);
+  border-collapse: collapse;
+  background-color: var(--color-section);
+  shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.prose tr,
+td,
+th {
+  border: 1px solid #4B5563; /* thoda contrast ke liye dark border */
+  padding: 0.75rem;
+}
+
+.prose strong,
+.prose b {
+  color: var(--color-text) !important;
+  font-weight: 700;
+}
+
+.prose em {
+  color: var(--color-text) !important;
+  font-style: italic;
 }
