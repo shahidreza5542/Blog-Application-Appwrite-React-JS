@@ -9,7 +9,7 @@ const BlogCard = () => {
 
 
   return (
-    <div className=' w-[96%] lg:w-[80%] mx-auto bg-section py-5 px-4 rounded shadow hover:shadow-2xl cursor-pointer  border border-transparent hover:border-btn  transition-all duration-300 grid grid-cols-1 lg:grid-cols-4 gap-x-1'>
+    <div className=' w-[96%] lg:w-[80%] mx-auto bg-section py-5 px-4 rounded-xl shadow hover:shadow-2xl cursor-pointer  border border-transparent hover:border-btn  transition-all duration-300 grid grid-cols-1 lg:grid-cols-4 gap-x-1'>
             <div className="col-span-1 overflow-hidden lg:h-44 ">
                 <img src="https://nyc.cloud.appwrite.io/v1/storage/buckets/687cbdb0001af20ced97/files/688307750031ed658124/preview?width=640&height=300&project=6878783100012c76bc7c&mode=admin" className='w-full h-full rounded  hover:scale-110 transition-all duration-300' alt="" />
             </div>

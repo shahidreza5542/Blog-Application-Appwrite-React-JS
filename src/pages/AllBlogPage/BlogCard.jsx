@@ -30,7 +30,7 @@ const BlogCard = ({data}) => {
                     <span className={clsx('px-4 py-2 rounded-full  text-white',data.status?'bg-green-500':'bg-red-500')}>Status : {data.status ?'published':'un-published'}  </span>
 
                     </p>
-                    <p className="text-zinc-200 text-xs text-start ">
+                    <p className="text-p text-xs text-start ">
                         {moment(new Date(data.$createdAt)).format('LLL')}
                     </p>
 

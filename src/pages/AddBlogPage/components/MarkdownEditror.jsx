@@ -7,11 +7,11 @@ export default function MarkdownEditor({value,setValue}) {
       <MDEditor
         value={value}
         onChange={setValue}
-        data-color-mode="dark"
+        data-color-mode="light"
        className="!bg-main"
             extraCommands={[]} 
       />
-      <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
+      <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }}  />
     </div>
   );
 }
