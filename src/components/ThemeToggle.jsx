@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { FiMoon, FiSun } from 'react-icons/fi'
+import { motion } from 'framer-motion'
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
@@ -11,12 +13,25 @@ const ThemeToggle = () => {
   const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light')
 
   return (
-    <button
+    <motion.button
       onClick={toggleTheme}
-      className="bg-btn text-white px-4 py-2 rounded hover:bg-btn-hover transition-all duration-300"
+      className="p-2 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300"
+      whileTap={{ scale: 0.9 }}
+      title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
     >
-      {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-    </button>
+      <motion.div
+        key={theme}
+        initial={{ rotate: -180, opacity: 0 }}
+        animate={{ rotate: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {theme === 'light' ? (
+          <FiMoon className="text-gray-900 text-2xl" />
+        ) : (
+          <FiSun className="text-yellow-400 text-2xl" />
+        )}
+      </motion.div>
+    </motion.button>
   )
 }
 

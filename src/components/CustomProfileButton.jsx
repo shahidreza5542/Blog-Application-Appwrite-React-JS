@@ -54,7 +54,7 @@ export default function CustomProfileButton() {
       <MenuItems
         transition
         anchor="bottom end"
-        className="w-52 origin-top-right rounded-xl border mt-5 border-white/5 bg-main p-1 text-sm/6 text-text transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
+        className="w-52  rounded-xl border mt-5 border-white/5 z-20 md:origin-top-right origin-center bg-[var(--color-main)] p-1 text-sm/6 text-text transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
       >
 
         {isAdmin&&
