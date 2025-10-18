@@ -23,7 +23,7 @@ const AllComments = ({ isUpdate, id }) => {
       setChats(documents)
 
     } catch (error) {
-      // toast.error(error.message)
+      toast.error(error.message)
     } finally {
       setLoading(false)
 

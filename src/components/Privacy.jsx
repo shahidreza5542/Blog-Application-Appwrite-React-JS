@@ -2,9 +2,9 @@ import React from 'react';
 
 const Privacy = () => {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-10 text-white mt-16 leading-relaxed">
-      <h1 className="text-4xl font-pbold mb-6 text-btn"><span className="text-white">Privacy</span> Policy</h1>
-      <p className="mb-6 font-psmbold text-white">
+    <div className="max-w-4xl mx-auto px-6 py-10 text-text mt-16 leading-relaxed">
+      <h1 className="text-4xl font-pbold mb-6 text-btn"><span className="text-text">Privacy</span> Policy</h1>
+      <p className="mb-6 font-psmbold text-p">
         Welcome to <strong className='text-btn'>DevHive</strong>. Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website (https://devhive.qzz.io/).
       </p>
 

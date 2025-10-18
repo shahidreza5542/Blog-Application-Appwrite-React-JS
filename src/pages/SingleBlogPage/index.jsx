@@ -97,8 +97,8 @@ const SingleBlogPage = () => {
 
 
       {image && (
-        <div className="w-full lg:h-[450px] mb-3">
-          <img src={image} alt={blog?.title || 'Blog image'} className='w-full h-full object-cover object-top' />
+        <div className="w-full lg:h-[450px] mb-3 flex justify-center items-center rounded-2xl">
+          <img src={image} alt={blog?.title || 'Blog image'} className='w-[95%] h-full object-cover object-top rounded-2xl' />
         </div>
       )}
       <div className=" w-[96%] lg:w-[80%] mx-auto">
@@ -109,8 +109,8 @@ const SingleBlogPage = () => {
           <div className="flex items-center px-4 py-2  mt-5 ">
             {profileimage && <img alt={userName} src={profileimage} className="relative inline-block h-8 w-8 rounded-full" />}
             <div className="flex flex-col ml-3 text-sm">
-              <span className="text-zinc-200 font-semibold">{userName}</span>
-              <span className="text-zinc-300">
+              <span className="text-text font-semibold">{userName}</span>
+              <span className="text-p">
                 {blog?.$createdAt ? moment(new Date(blog.$createdAt)).format("LL") : 'Unknown date'}
 
               </span>

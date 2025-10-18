@@ -2,9 +2,9 @@ import React from 'react';
 
 const Terms = () => {
   return (
-    <div className="max-w-4xl mx-auto px-6 mt-16 font-pregular py-10 text-white leading-relaxed">
-      <h1 className="text-4xl font-pbold mb-6 text-btn"><span className="text-white">Terms</span> and Conditions</h1>
-      <p className="mb-6 font-psmbold">
+    <div className="max-w-4xl mx-auto px-6 mt-16 font-pregular py-10 text-text leading-relaxed">
+      <h1 className="text-4xl font-pbold mb-6 text-btn"><span className="text-text">Terms</span> and Conditions</h1>
+      <p className="mb-6 font-psmbold text-p">
         Welcome to <strong className='text-btn'>DevHive</strong>. By accessing or using our website (https://devhive.qzz.io/), you agree to comply with and be bound by the following terms and conditions. Please read them carefully.
       </p>
 

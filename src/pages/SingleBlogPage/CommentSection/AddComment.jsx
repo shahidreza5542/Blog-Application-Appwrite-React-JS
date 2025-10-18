@@ -37,11 +37,11 @@ const AddComment = ({ isUpdate, setIsUpdate, id }) => {
 
 
             helpers.resetForm()
-            // toast.success("Comment Added !")
+            toast.success("Comment Added !")
             setIsUpdate(!isUpdate)
 
         } catch (error) {
-            // toast.error(error.message)
+            toast.error(error.message)
         }
     }
 

@@ -43,7 +43,7 @@ const HomePage = () => {
   })
  
   return (
-    <div className="min-h-screen bg-black mt-16">
+    <div className="min-h-screen bg-main mt-16">
       <div className="container mx-auto px-4 py-8">
         {/* Search Bar */}
         <div className="mb-8 flex flex-col items-center">
@@ -52,10 +52,10 @@ const HomePage = () => {
               value={search} 
               onChange={(e) => setSearch(e.target.value)} 
               type="text" 
-              className="w-full bg-transparent outline-none text-white placeholder-gray-400" 
+              className="w-full bg-transparent outline-none text-text placeholder-gray-400" 
               placeholder="Search blogs..." 
             />
-            <CgSearch className="text-2xl text-gray-400" />
+            <CgSearch className="text-2xl text-text" />
           </div>
           
           {/* Debug info */}
@@ -79,12 +79,12 @@ const HomePage = () => {
               </div>
             ) : (
               <div className="py-20 text-center">
-                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                <h1 className="text-4xl md:text-5xl font-bold text-text">
                   {search ? 'No Results Found' : 'No Blogs Available'}
                   <span className="text-btn">!</span>
                 </h1>
                 {search && (
-                  <p className="text-gray-400 mt-4">
+                  <p className="text-text mt-4">
                     Try searching with different keywords
                   </p>
                 )}

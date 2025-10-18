@@ -1,30 +1,55 @@
 @import 'tailwindcss';
 
 @plugin "@tailwindcss/typography";
-@theme{
-  --color-main : #131315;
-  --color-section: #1d1d21;
-  --color-btn : #86198F;
-  --color-btn-hover:#86198f; 
-  --color-white:#F5F5F5;
 
-  --font-pregular:Poppins-Regular;
-  --font-pbold:Poppins-Bold;
-  --font-pblack:Poppins-Black;
-  --font-psmbold:Poppins-SemiBold;
-  --font-pmdium:Poppins-Medium;
+@theme {
+  --color-main: #F5F5F5;
+  /* main background - very light */
+  --color-section: #EEEEEE;
+  /* section background - slightly darker */
+  --color-btn: #86198F;
+  /* button color */
+  --color-btn-hover: #A14BBF;
+  /* button hover */
+  --color-text: #131315;
+  /* headings / strong text - dark */
+  --color-p: #333333;
+  /* paragraphs - slightly lighter than text */
+
+  --font-pregular: Poppins-Regular;
+  --font-pbold: Poppins-Bold;
+  --font-pblack: Poppins-Black;
+  --font-psmbold: Poppins-SemiBold;
+  --font-pmdium: Poppins-Medium;
 
 }
 
-body{
-  @apply bg-main text-white font-pregular;
+body {
+  @apply bg-main text-text font-pregular;
 }
-.prose{
+
+.prose {
   overflow: hidden;
 }
-.prose h1,h2,h3,h4,h5,h6,ul,ol,table,tr,td,th{
-  @apply !text-white; 
+
+.prose h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+table,
+tr,
+td,
+th {
+  @apply !text-text;
 }
-.prose img{
+p {
+  @apply !text-p
+}
+
+.prose img {
   @apply mx-auto hover:scale-105 transition-all duration-300;
 }

@@ -65,10 +65,10 @@ const HomeBlogCard = ({ data }) => {
 
         {/* Content */}
         <div className="p-4 sm:p-5 flex flex-col flex-1">
-          <h3 className="text-white text-lg sm:text-xl font-bold mb-2 sm:mb-3 line-clamp-2">
+          <h3 className="text-text text-lg sm:text-xl font-bold mb-2 sm:mb-3 line-clamp-2">
             {data.title}
           </h3>
-          <p className="text-zinc-300 text-sm sm:text-base leading-relaxed mb-3 sm:mb-4 line-clamp-3">
+          <p className="text-p text-sm sm:text-base leading-relaxed mb-3 sm:mb-4 line-clamp-3">
             {data.description?.substring(0, 120)}
             {data.description?.length > 120 ? '...' : ''}
           </p>
@@ -103,14 +103,14 @@ const HomeBlogCard = ({ data }) => {
               </div>
             )}
             <div className="ml-3 flex flex-col text-sm">
-              <span className="text-white font-semibold">{user?.name || 'Anonymous User'}</span>
-              <span className="text-zinc-400 text-xs sm:text-sm">
+              <span className="text-text font-semibold">{user?.name || 'Anonymous User'}</span>
+              <span className="text-gray-700 text-xs sm:text-sm">
                 {moment(new Date(data.$createdAt)).format('LL')}
               </span>
             </div>
           </div>
 
-          <span className="text-zinc-400 text-xs sm:text-sm">
+          <span className="text-gray-700 text-xs sm:text-sm">
             {moment(new Date(data.$createdAt)).format('LT')}
           </span>
         </div>

@@ -21,11 +21,11 @@ const LoaderComponent = () => {
   }, [])
 
   return (
-    <div className="flex items-center justify-center min-h-screen flex-col bg-black">
+    <div className="flex items-center justify-center min-h-screen flex-col bg-main">
       <div className="text-center">
         <div
           title="DevHive"
-          className="font-pbold text-5xl lg:text-7xl flex items-center justify-center gap-x-2 text-white"
+          className="font-pbold text-5xl lg:text-7xl flex items-center justify-center gap-x-2 text-text"
         >
           <FaLaptopCode className="text-btn" />
           <span>DevHive</span>
@@ -40,7 +40,7 @@ const LoaderComponent = () => {
           ></div>
         </div>
 
-        <p className="text-white text-sm mt-2">{progress}%</p>
+        <p className="text-p text-sm mt-2">{progress}%</p>
       </div>
     </div>
   )
