@@ -65,7 +65,7 @@ const HomeBlogCard = ({ data }) => {
 
         {/* Content */}
         <div className="p-4 sm:p-5 flex flex-col flex-1">
-          <h3 className="text-text text-lg sm:text-xl font-serif mb-2 sm:mb-3 line-clamp-2">
+          <h3 className="text-text text-lg sm:text-xl font-bold mb-2 sm:mb-3 line-clamp-2">
             {data.title}
           </h3>
           <p className="text-p text-sm sm:text-base leading-relaxed mb-3 sm:mb-4 line-clamp-3">
@@ -79,7 +79,7 @@ const HomeBlogCard = ({ data }) => {
               {tags.map((cur, i) => (
                 <li
                   key={i}
-                  className="px-3 py-1 bg-btn text-white rounded-full text-xs sm:text-sm font-serif shadow-sm hover:opacity-90 transition-opacity duration-200 capitalize"
+                  className="px-3 py-1 bg-btn text-white rounded-full text-xs sm:text-sm font-semibold shadow-sm hover:opacity-90 transition-opacity duration-200 capitalize"
                 >
                   {cur}
                 </li>
@@ -98,12 +98,12 @@ const HomeBlogCard = ({ data }) => {
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover"
               />
             ) : (
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-btn flex items-center justify-center text-white font-serif text-sm">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-btn flex items-center justify-center text-white font-bold text-sm">
                 {user?.name?.charAt(0) || 'A'}
               </div>
             )}
             <div className="ml-3 flex flex-col text-sm">
-              <span className="text-text font-serif">{user?.name || 'Anonymous User'}</span>
+              <span className="text-text font-semibold">{user?.name || 'Anonymous User'}</span>
               <span className="text-gray-700 text-xs sm:text-sm">
                 {moment(new Date(data.$createdAt)).format('LL')}
               </span>
