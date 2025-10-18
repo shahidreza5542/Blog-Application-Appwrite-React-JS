@@ -41,7 +41,7 @@ const AddComment = ({ isUpdate, setIsUpdate, id }) => {
             setIsUpdate(!isUpdate)
 
         } catch (error) {
-            toast.error(error.message)
+            // toast.error(error.message)
         }
     }
 
