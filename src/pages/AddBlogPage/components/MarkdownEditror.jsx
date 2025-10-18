@@ -11,7 +11,7 @@ export default function MarkdownEditor({value,setValue}) {
        className="!bg-main"
             extraCommands={[]} 
       />
-      <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }}  />
+      
     </div>
   );
 }

@@ -26,6 +26,7 @@
 
 body {
   @apply bg-main text-text font-pregular;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .prose {
@@ -45,9 +46,11 @@ tr,
 td,
 th {
   @apply !text-text;
+  font-family: sans-serif;
 }
 p {
   @apply !text-p
+  font-family: sans-serif;
 }
 
 .prose img {
