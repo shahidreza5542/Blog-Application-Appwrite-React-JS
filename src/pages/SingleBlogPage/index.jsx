@@ -181,7 +181,6 @@ const SingleBlogPage = () => {
               {!summarizing ? 
               <FaFileAlt className="w-5 h-5" /> :
               <LoaderIcon className="w-5 h-5" />
-
               }
             </button>
           </div>
