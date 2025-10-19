@@ -49,7 +49,7 @@ const HomePage = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Search Bar */}
         <div className="mb-8 flex flex-col items-center">
-          <div className="w-full max-w-md border border-gray-600 py-3 px-4 rounded-lg flex items-center bg-section hover:border-btn transition-colors duration-200">
+          <div className="w-full max-w-md border border-[var(--color-btn)] py-3 px-4 rounded-lg flex items-center bg-section hover:border-btn transition-colors duration-200">
             <input 
               value={search} 
               onChange={(e) => setSearch(e.target.value)} 

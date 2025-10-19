@@ -49,7 +49,7 @@ const HomeBlogCard = ({ data }) => {
 
   return (
     <Link to={`/blog/${data.slug}`}>
-      <div className="group relative flex flex-col bg-section border border-btn rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden  md:max-w-full w-[90%] mx-auto">
+      <div className="group relative flex flex-col bg-section border border-[var(--color-btn)]  rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden  md:max-w-full w-[90%] mx-auto">
         
         {/* Image */}
         <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
