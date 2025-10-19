@@ -102,13 +102,13 @@ const HomeBlogCard = ({ data }) => {
             )}
             <div className="ml-3 flex flex-col text-sm">
               <span className="text-text font-semibold">{user?.name || 'Anonymous User'}</span>
-              <span className="text-gray-700 text-xs sm:text-sm">
+              <span className="text-[var(--color-p)] text-xs sm:text-sm">
                 {moment(new Date(data.$createdAt)).format('LL')}
               </span>
             </div>
           </div>
 
-          <span className="text-gray-700 text-xs sm:text-sm">
+          <span className="text-[var(--color-p)] text-xs sm:text-sm">
             {moment(new Date(data.$createdAt)).format('LT')}
           </span>
         </div>
