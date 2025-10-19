@@ -1,3 +1,4 @@
+// ✅ SingleBlogPage.js (Fixed, SEO + Appwrite Guest Compatible)
 import React, { useEffect, useState } from 'react'
 import toast, { LoaderIcon } from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
@@ -33,6 +34,7 @@ const SingleBlogPage = () => {
   const [summarizing, setSummarizing] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
+  // ✅ Safe fetch with guest permission handling
   const fetchBlog = async () => {
     try {
       setLoading(true)
@@ -45,8 +47,6 @@ const SingleBlogPage = () => {
         ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID,
         [Query.equal("slug", params.slug), Query.equal("status", true)]
       )
-
-      console.log("Fetched blog data:", res.documents)
 
       if (!res || !res.documents || res.documents.length === 0) {
         console.warn("No blog found for slug:", params.slug)
@@ -83,6 +83,7 @@ const SingleBlogPage = () => {
     fetchBlog()
   }, [params?.slug])
 
+  // ✅ Translation Function
   const handleTranslate = async (langCode) => {
     if (!blog) return
     setSelectedLang(langCode)
@@ -105,6 +106,7 @@ const SingleBlogPage = () => {
     }
   }
 
+  // ✅ Summarization Function
   const handleSummarize = async () => {
     if (!blog) return
     setSummarizing(true)
@@ -145,23 +147,42 @@ const SingleBlogPage = () => {
 
   return (
     <section className='py-10 w-full mt-16'>
+      {/* ✅ SEO and Structured Data */}
       <Helmet>
         <meta charSet="utf-8" />
         <title>{blog?.title || 'Blog Post'}</title>
-        <link rel="canonical" href={window.location.href} />
+        <link rel="canonical" href={`https://devhive.qzz.io/blog/${params.slug}`} />
         <meta name="description" content={blog?.description || 'Blog post content'} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: blog?.title,
+            description: blog?.description,
+            author: userName,
+            datePublished: moment(new Date(blog.$createdAt)).format("YYYY-MM-DD"),
+            image: image || '',
+            url: `https://devhive.qzz.io/blog/${params.slug}`,
+          })}
+        </script>
       </Helmet>
 
       {image && (
         <div className="w-full lg:h-[450px] mb-3 flex justify-center items-center rounded-2xl">
-          <img src={image} alt={blog?.title || 'Blog image'} className='w-[95%] h-full items-center object-cover object-top rounded-2xl' />
+          <img
+            src={image}
+            alt={blog?.title || 'Blog image'}
+            className="w-[95%] h-full object-cover object-top rounded-2xl"
+          />
         </div>
       )}
 
       <div className="w-[96%] lg:w-[80%] mx-auto">
         {/* Title + Translate + Summarize */}
         <div className="mb-3 py-5 flex flex-col lg:flex-row lg:justify-between lg:items-center gap-3">
-          <h1 className="text-start font-pblack text-3xl text-[var(--color-text)]">{blog?.title || 'Untitled Post'}</h1>
+          <h1 className="text-start font-pblack text-3xl text-[var(--color-text)]">
+            {blog?.title || 'Untitled Post'}
+          </h1>
           <div className="flex gap-2 relative">
             {/* Translate icon */}
             <button
@@ -190,17 +211,24 @@ const SingleBlogPage = () => {
               className="bg-[var(--color-section)] hover:bg-green-700 text-[var(--color-text)] p-3 rounded-md flex items-center justify-center"
               disabled={summarizing}
             >
-              {!summarizing ?
-                <FaFileAlt className="w-5 h-5" /> :
+              {!summarizing ? (
+                <FaFileAlt className="w-5 h-5" />
+              ) : (
                 <LoaderIcon className="w-5 h-5" />
-              }
+              )}
             </button>
           </div>
         </div>
 
         {/* Author Info */}
         <div className="flex items-center px-4 py-2 mt-5">
-          {profileimage && <img alt={userName} src={profileimage} className="relative inline-block h-8 w-8 rounded-full" />}
+          {profileimage && (
+            <img
+              alt={userName}
+              src={profileimage}
+              className="relative inline-block h-8 w-8 rounded-full"
+            />
+          )}
           <div className="flex flex-col ml-3 text-sm">
             <span className="text-[var(--color-text)] font-semibold">{userName}</span>
             <span className="text-p text-[var(--color-text)]">
@@ -217,7 +245,10 @@ const SingleBlogPage = () => {
         {/* Tags */}
         <ul className="flex items-center gap-x-3 gap-y-3 flex-wrap">
           {tags && tags.length > 0 && tags.map((cur, i) => (
-            <li key={i} className='px-3 py-1 rounded-full bg-[var(--color-section)] hover:bg-main shadow-2xl cursor-pointer text-lg lg:text-xl text-[var(--color-text)]'>
+            <li
+              key={i}
+              className="px-3 py-1 rounded-full bg-[var(--color-section)] hover:bg-main shadow-2xl cursor-pointer text-lg lg:text-xl text-[var(--color-text)]"
+            >
               #{cur.trim()}
             </li>
           ))}
@@ -236,7 +267,9 @@ const SingleBlogPage = () => {
             <button
               className="absolute top-3 right-3 text-xl font-bold text-[var(--color-text)]"
               onClick={() => setSummarizeModal(false)}
-            >×</button>
+            >
+              ×
+            </button>
             <h2 className="text-xl font-semibold mb-4 text-[var(--color-text)]">Blog Summary</h2>
             <p className="text-[var(--color-text)] whitespace-pre-wrap">{summaryText}</p>
           </div>
