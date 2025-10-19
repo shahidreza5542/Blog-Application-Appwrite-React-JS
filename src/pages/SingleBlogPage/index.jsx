@@ -12,7 +12,6 @@ import CommentSection from './CommentSection'
 import { Helmet } from "react-helmet-async"
 import OpenAI from 'openai'
 import { FaLanguage, FaFileAlt } from 'react-icons/fa'
-import { FaCheck } from 'react-icons/fa6'
 
 const languages = [
   { code: 'en', label: 'English' },
@@ -32,33 +31,47 @@ const SingleBlogPage = () => {
   const [summarizeModal, setSummarizeModal] = useState(false)
   const [summaryText, setSummaryText] = useState('')
   const [summarizing, setSummarizing] = useState(false)
-  const [dropdownOpen, setDropdownOpen] = useState(false) // For translate dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const fetchBlog = async () => {
     try {
-      const blog = await appWriteDB.listDocuments(
-        ENVObj.VITE_APPWRITE_DB_ID, 
-        ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID, 
+      setLoading(true)
+      setError(false)
+
+      console.log("Fetching blog for slug:", params.slug)
+
+      const res = await appWriteDB.listDocuments(
+        ENVObj.VITE_APPWRITE_DB_ID,
+        ENVObj.VITE_APPWRITE_BLOG_COLLECTION_ID,
         [Query.equal("slug", params.slug), Query.equal("status", true)]
       )
-      if (!blog.documents || blog.documents.length === 0) {
+
+      console.log("Fetched blog data:", res.documents)
+
+      if (!res || !res.documents || res.documents.length === 0) {
+        console.warn("No blog found for slug:", params.slug)
         setError(true)
         return
       }
-      const blogData = blog.documents[0]
+
+      const blogData = res.documents[0]
+
       try {
-        const { documents } = await appWriteDB.listDocuments(
-          ENVObj.VITE_APPWRITE_DB_ID, 
-          ENVObj.VITE_APPWRITE_PROFILE_COLLECTION_ID, 
+        const userRes = await appWriteDB.listDocuments(
+          ENVObj.VITE_APPWRITE_DB_ID,
+          ENVObj.VITE_APPWRITE_PROFILE_COLLECTION_ID,
           [Query.equal('user', blogData.user)]
         )
-        blogData['userProfile'] = documents.length > 0 ? documents[0] : null
-      } catch {
+        blogData['userProfile'] = userRes.documents.length > 0 ? userRes.documents[0] : null
+      } catch (e) {
+        console.warn("User profile fetch failed:", e)
         blogData['userProfile'] = null
       }
+
       setBlog(blogData)
       document.title = blogData.title || 'Blog Post'
-    } catch {
+    } catch (err) {
+      console.error("Fetch blog failed:", err)
       setError(true)
     } finally {
       setLoading(false)
@@ -66,10 +79,10 @@ const SingleBlogPage = () => {
   }
 
   useEffect(() => {
-    if (params.slug) fetchBlog()
-  }, [params])
+    if (!params?.slug) return
+    fetchBlog()
+  }, [params?.slug])
 
-  // Translate full page
   const handleTranslate = async (langCode) => {
     if (!blog) return
     setSelectedLang(langCode)
@@ -87,12 +100,11 @@ const SingleBlogPage = () => {
         toast.success(`Page translated to ${languages.find(l => l.code === langCode)?.label}`)
       }
     } catch (err) {
-      console.error(err)
+      console.error("Translation error:", err)
       toast.error('Translation failed!')
     }
   }
 
-  // Summarize content
   const handleSummarize = async () => {
     if (!blog) return
     setSummarizing(true)
@@ -115,10 +127,10 @@ const SingleBlogPage = () => {
 
       setSummaryText(completion.choices[0].message.content)
       setSummarizeModal(true)
-      setSummarizing(false)
     } catch (err) {
-      console.error(err)
+      console.error("Summarization error:", err)
       toast.error('Summarization failed!')
+    } finally {
       setSummarizing(false)
     }
   }
@@ -142,7 +154,7 @@ const SingleBlogPage = () => {
 
       {image && (
         <div className="w-full lg:h-[450px] mb-3 flex justify-center items-center rounded-2xl">
-          <img src={image} alt={blog?.title || 'Blog image'} className='w-[95%] h-full object-cover object-top rounded-2xl' />
+          <img src={image} alt={blog?.title || 'Blog image'} className='w-[95%] h-full items-center object-cover object-top rounded-2xl' />
         </div>
       )}
 
@@ -151,7 +163,7 @@ const SingleBlogPage = () => {
         <div className="mb-3 py-5 flex flex-col lg:flex-row lg:justify-between lg:items-center gap-3">
           <h1 className="text-start font-pblack text-3xl text-[var(--color-text)]">{blog?.title || 'Untitled Post'}</h1>
           <div className="flex gap-2 relative">
-            {/* Translate icon button */}
+            {/* Translate icon */}
             <button
               className="bg-[var(--color-section)] hover:bg-green-700 text-[var(--color-text)] p-3 rounded-md flex items-center justify-center"
               onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -172,15 +184,15 @@ const SingleBlogPage = () => {
               </ul>
             )}
 
-            {/* Summarize icon button */}
+            {/* Summarize icon */}
             <button
               onClick={handleSummarize}
               className="bg-[var(--color-section)] hover:bg-green-700 text-[var(--color-text)] p-3 rounded-md flex items-center justify-center"
               disabled={summarizing}
             >
-              {!summarizing ? 
-              <FaFileAlt className="w-5 h-5" /> :
-              <LoaderIcon className="w-5 h-5" />
+              {!summarizing ?
+                <FaFileAlt className="w-5 h-5" /> :
+                <LoaderIcon className="w-5 h-5" />
               }
             </button>
           </div>
