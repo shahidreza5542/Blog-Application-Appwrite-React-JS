@@ -153,7 +153,7 @@ const SingleBlogPage = () => {
           <div className="flex gap-2 relative">
             {/* Translate icon button */}
             <button
-              className="bg-[var(--color-section)] hover:bg-btn-hover text-[var(--color-text)] p-3 rounded-md flex items-center justify-center"
+              className="bg-[var(--color-section)] hover:bg-green-700 text-[var(--color-text)] p-3 rounded-md flex items-center justify-center"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             >
               <FaLanguage className="w-5 h-5" />
