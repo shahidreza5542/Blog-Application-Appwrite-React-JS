@@ -107,4 +107,14 @@ th {
   font-style: italic;
 }
 
+.prose :where(a) {
+  color: var(--color-btn);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s;
+}
 
+.prose :where(a):hover {
+  color: var(--color-btn-hover);
+  text-decoration: underline;
+}

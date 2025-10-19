@@ -40,9 +40,11 @@ const HomePage = () => {
                    tags.includes(searchTerm)
     
     return matches
+    
   })
  
   return (
+    
     <div className="min-h-screen bg-main mt-16">
       <div className="container mx-auto px-4 py-8">
         {/* Search Bar */}
