@@ -21,7 +21,7 @@ const LoaderComponent = () => {
   }, [])
 
   return (
-    <div className="flex items-center justify-center min-h-screen flex-col bg-main">
+    <div className="flex items-center justify-center min-h-screen flex-col bg-main caret-transparent">
       <div className="text-center">
         <div
           title="DevHive"
