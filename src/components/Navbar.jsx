@@ -15,7 +15,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <header className='w-full bg-section py-3 fixed top-0 z-20'>
+    <header className='w-full bg-section py-3 fixed top-0 z-200'>
       <nav className='w-[95%] lg:w-[90%] xl:w-[80%] mx-auto flex justify-between items-center'>
         <Logo />
 
