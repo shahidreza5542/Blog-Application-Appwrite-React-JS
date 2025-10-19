@@ -48,6 +48,7 @@ export default function CustomProfileButton() {
     <Menu >
       <MenuButton className=" flex items-center justify-center outline-none gap-x-1">
         <FaRegUserCircle className='text-2xl' />
+        <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
       </MenuButton>
 
       <MenuItems
