@@ -35,12 +35,10 @@ const HomeBlogCard = ({ data }) => {
           setImages({ image, profileImage: null })
         }
       } catch (profileError) {
-        console.log('Profile fetch failed:', profileError)
         setImages({ image, profileImage: null })
         setUser({ name: 'Anonymous User' })
       }
     } catch (error) {
-      console.log('HomeBlogCard fetch error:', error)
       if (error.code !== 401) toast.error(error.message)
     }
   }

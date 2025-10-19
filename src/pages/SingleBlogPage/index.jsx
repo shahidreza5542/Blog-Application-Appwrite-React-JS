@@ -29,7 +29,6 @@ const SingleBlogPage = () => {
       ])
       // Check if blog exists
       if (!blog.documents || blog.documents.length === 0) {
-        console.log('Blog not found')
         setError(true)
         return
       }
@@ -47,7 +46,6 @@ const SingleBlogPage = () => {
           blogData['userProfile'] = null
         }
       } catch (profileError) {
-        console.log('Profile fetch failed:', profileError)
         blogData['userProfile'] = null
       }
 
@@ -57,7 +55,6 @@ const SingleBlogPage = () => {
 
 
     } catch (error) {
-      console.log('SingleBlogPage fetch error:', error)
       setError(true)
     } finally {
       setLoading(false)
