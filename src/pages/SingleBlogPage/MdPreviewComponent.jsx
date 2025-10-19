@@ -4,8 +4,9 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/atom-one-dark.css'
 
 const MdPreviewComponent = ({ data }) => {
+  // Markdown-it instance with syntax highlighting
   const md = useMemo(() => {
-    return markdownIt({
+    const instance = markdownIt({
       html: true,
       linkify: true,
       typographer: true,
@@ -13,12 +14,18 @@ const MdPreviewComponent = ({ data }) => {
         if (lang && hljs.getLanguage(lang)) {
           try {
             return `<pre class="hljs rounded-lg overflow-x-auto p-4"><code>${hljs.highlight(str, { language: lang, ignoreIllegals: true }).value}</code></pre>`
-          } catch (__) { }
+          } catch (err) {
+            console.error(err)
+          }
         }
-        return `<pre class="hljs rounded-lg overflow-x-auto p-4"><code>${md.utils.escapeHtml(str)}</code></pre>`
+        // Fallback for unknown languages
+        return `<pre class="hljs rounded-lg overflow-x-auto p-4"><code>${instance.utils.escapeHtml(str)}</code></pre>`
       },
     })
+    return instance
   }, [])
+
+  if (!data) return null // Agar data empty ho to render mat karo
 
   return (
     <article
@@ -26,7 +33,6 @@ const MdPreviewComponent = ({ data }) => {
       style={{ color: 'var(--color-text)' }}
       dangerouslySetInnerHTML={{ __html: md.render(data) }}
     />
-
   )
 }
 
