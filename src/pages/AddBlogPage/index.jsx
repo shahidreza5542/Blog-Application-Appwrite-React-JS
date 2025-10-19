@@ -103,7 +103,6 @@ const AddBlogPage = () => {
     }
 
     setAiLoading(true)
-    console.log(import.meta.env.VITE_OPENROUTER_API_KEY)
 
     const aiContent = await openAIRequest(
       `Write a high-quality, SEO-friendly, human-like article in Markdown format based on the title:\n"${values.title.trim()}"\nInclude headings, subheadings, bullet points, and natural flow. Do NOT wrap in code blocks.`
